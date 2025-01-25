@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:click_gift/components/custom_snackbar.dart';
+import 'package:click_gift/routes/routes.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,11 +48,12 @@ class RegisterController extends GetxController {
           password: password.text);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('user', jsonEncode(user.toJson()));
+      Get.back();
       showCustomSnackbar(
           title: 'Success',
           message: 'Registration successful',
           backgroundColor: Colors.greenAccent);
-      Get.back();
+
     } else {
       showCustomSnackbar(
           title: 'Error',

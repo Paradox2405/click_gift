@@ -19,7 +19,7 @@ isLoading.value=true;
     bool isValidUser = await AuthService.validateUser(email.text, password.text);
     if (isValidUser) {
       await AuthService.login(await AuthService.getUser());
-      Get.offAndToNamed(Routes.home);
+      Get.offAllNamed(Routes.home);
     } else {
       showCustomSnackbar(title: "Error", message: "Invalid email or password",
           backgroundColor: Colors.redAccent);

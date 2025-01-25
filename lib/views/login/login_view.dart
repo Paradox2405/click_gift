@@ -1,4 +1,5 @@
 import 'package:click_gift/components/custom_button.dart';
+import 'package:click_gift/components/gradient_header_text.dart';
 import 'package:click_gift/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,6 +35,8 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            AnimatedGradientText(),
+            SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
                 color: Color.fromRGBO(255, 255, 255, 0.6), // Semi-transparent white background

@@ -1,0 +1,124 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Flowers",
+      "products": [
+        {
+          "name": "Rose Bouquet",
+          "description": "A beautiful bouquet of fresh red roses.",
+          "price": 29.99,
+          "image": "https://i.pinimg.com/736x/2e/cf/06/2ecf067a2069128f44d75d25a32e219e.jpg"
+        },
+        {
+          "name": "Tulip Bunch",
+          "description": "A vibrant bunch of tulips in assorted colors.",
+          "price": 24.99,
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDBXXbJCKk6IUHSGHdx6SsjtNcCQzx_nDZzA&s"
+        },
+        {
+          "name": "Orchid Basket",
+          "description": "A delightful basket of exotic orchids.",
+          "price": 39.99,
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ6mgbXw-2VzBMaulEsMsbK_TPycNoiyKk2g&s"
+        },
+        {
+          "name": "Sunflower Arrangement",
+          "description": "Bright sunflowers arranged in a stylish vase.",
+          "price": 34.99,
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQs267zI4GH-HQZjM3-zur5mM0Bq4nLjZ9Tw&s"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Jewelry",
+      "products": [
+        {
+          "name": "Gold Necklace",
+          "description": "A stunning 18K gold necklace with a diamond pendant.",
+          "price": 499.99,
+          "image": "https://example.com/images/gold_necklace.jpg"
+        },
+        {
+          "name": "Silver Bracelet",
+          "description": "An elegant silver bracelet with intricate designs.",
+          "price": 149.99,
+          "image": "https://example.com/images/silver_bracelet.jpg"
+        },
+        {
+          "name": "Pearl Earrings",
+          "description": "Classic pearl earrings perfect for any occasion.",
+          "price": 199.99,
+          "image": "https://example.com/images/pearl_earrings.jpg"
+        },
+        {
+          "name": "Platinum Ring",
+          "description": "A premium platinum ring with a sleek design.",
+          "price": 799.99,
+          "image": "https://example.com/images/platinum_ring.jpg"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Cakes",
+      "products": [
+        {
+          "name": "Chocolate Cake",
+          "description": "A rich chocolate cake with a creamy chocolate ganache.",
+          "price": 39.99,
+          "image": "https://example.com/images/chocolate_cake.jpg"
+        },
+        {
+          "name": "Vanilla Sponge Cake",
+          "description": "A light and fluffy vanilla sponge cake with buttercream frosting.",
+          "price": 34.99,
+          "image": "https://example.com/images/vanilla_sponge.jpg"
+        },
+        {
+          "name": "Red Velvet Cake",
+          "description": "A moist red velvet cake with cream cheese frosting.",
+          "price": 44.99,
+          "image": "https://example.com/images/red_velvet_cake.jpg"
+        },
+        {
+          "name": "Fruit Cake",
+          "description": "A delightful cake filled with fresh seasonal fruits.",
+          "price": 49.99,
+          "image": "https://example.com/images/fruit_cake.jpg"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Combo Boxes",
+      "products": [
+        {
+          "name": "Flower and Chocolate Combo",
+          "description": "A perfect gift combo of fresh flowers and gourmet chocolates.",
+          "price": 59.99,
+          "image": "https://example.com/images/flower_chocolate_combo.jpg"
+        },
+        {
+          "name": "Jewelry and Cake Combo",
+          "description": "An exquisite combo of a silver bracelet and a chocolate cake.",
+          "price": 199.99,
+          "image": "https://example.com/images/jewelry_cake_combo.jpg"
+        },
+        {
+          "name": "Flowers and Cake Combo",
+          "description": "A vibrant bouquet of roses paired with a chocolate cake.",
+          "price": 89.99,
+          "image": "https://example.com/images/flowers_cake_combo.jpg"
+        },
+        {
+          "name": "Premium Gift Set",
+          "description": "A luxurious set including jewelry, flowers, and cake.",
+          "price": 249.99,
+          "image": "https://example.com/images/premium_gift_set.jpg"
+        }
+      ]
+    }
+  ]
+}
