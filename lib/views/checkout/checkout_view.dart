@@ -1,4 +1,5 @@
 import 'package:battery_plus/battery_plus.dart';
+import 'package:click_gift/components/custom_button.dart';
 import 'package:click_gift/components/custom_snackbar.dart';
 import 'package:click_gift/views/checkout/confirmation.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
             }),
             const SizedBox(height: 32),
             Center(
-              child: ElevatedButton(
+              child: customButton(
+                buttonText: "Place Order",
                 onPressed: () {
                   Get.to(() => OrderConfirmationScreen(), arguments: {
                     "recipientName": recipientNameController.text,
@@ -101,7 +103,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     "paymentMethod": selectedPaymentMethod.value,
                   });
                 },
-                child: const Text("Place Order"),
               ),
             ),
           ],

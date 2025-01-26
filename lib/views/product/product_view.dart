@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:click_gift/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -64,11 +65,10 @@ class _ProductPageState extends State<ProductPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              "\$${product['price']}",
+              "Rs ${product['price']}",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
-                color: Theme.of(context).primaryColor,
               ),
             ),
             const SizedBox(height: 16),
@@ -116,7 +116,8 @@ class _ProductPageState extends State<ProductPage> {
             ),
             const SizedBox(height: 16),
             Center(
-              child: ElevatedButton(
+              child: customButton(
+                buttonText: "Upload a Custom Image",
                 onPressed: () async {
                   showDialog(
                     context: context,
@@ -144,19 +145,6 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                child: const Text(
-                  "Upload a Custom Image",
-                  style: TextStyle(fontSize: 18),
-                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -204,7 +192,8 @@ class _ProductPageState extends State<ProductPage> {
             ),
             const SizedBox(height: 24),
             Center(
-              child: ElevatedButton(
+              child: customButton(
+                buttonText: "Add to Cart",
                 onPressed: () {
                   controller.addToCart(
                     product['name'],
@@ -214,19 +203,6 @@ class _ProductPageState extends State<ProductPage> {
                     _messageController.text,
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                child: const Text(
-                  "Add to Cart",
-                  style: TextStyle(fontSize: 18),
-                ),
               ),
             ),
           ],

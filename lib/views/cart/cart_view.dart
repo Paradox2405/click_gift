@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:click_gift/components/custom_button.dart';
 import 'package:click_gift/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -64,7 +65,7 @@ class CartView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "\$${product['price']}",
+                                "Rs ${product['price']}",
                                 style: const TextStyle(fontSize: 16),
                               ),
                               Text(
@@ -179,11 +180,10 @@ class CartView extends StatelessWidget {
                   ),
                   Obx(
                     () => Text(
-                      "\$${controller.totalPrice.value.toStringAsFixed(2)}",
+                      "Rs ${controller.totalPrice.value.toStringAsFixed(2)}",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ),
@@ -194,20 +194,11 @@ class CartView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 48),
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
+                child: customButton(
+                  buttonText: "Proceed to Checkout",
                   onPressed: () {
                     Get.toNamed(Routes.checkout);
                   },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text(
-                    "Proceed to Checkout",
-                    style: TextStyle(fontSize: 16),
-                  ),
                 ),
               ),
             ),

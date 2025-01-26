@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:click_gift/routes/routes.dart';
 import 'package:click_gift/services/auth_service.dart'; // Import AuthService
-import 'package:click_gift/views/home/home_binding.dart';
-import 'package:click_gift/views/login/login_binding.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -86,9 +84,8 @@ class _MyAppState extends State<MyApp> {
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      initialRoute: widget.isLoggedIn ? Routes.home : Routes.login,
+      initialRoute: widget.isLoggedIn ? Routes.dashboard : Routes.login,
       getPages: Routes.routes,
-      initialBinding: widget.isLoggedIn ? HomeBinding() : LoginBinding(),
       builder: (context, child) {
         return Stack(
           children: [
