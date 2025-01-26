@@ -1,42 +1,43 @@
+import 'package:click_gift/components/gradient_header_text.dart';
 import 'package:click_gift/views/register/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../components/input_field.dart';
+
 import '../../components/custom_button.dart';
-import '../../routes/routes.dart';
+import '../../components/input_field.dart';
 
 class RegistrationPage extends StatelessWidget {
   RegistrationPage({super.key});
-  final RegisterController controller = Get.find <RegisterController>();
+  final RegisterController controller = Get.find<RegisterController>();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final gradient = theme.brightness == Brightness.dark
         ? LinearGradient(
-      colors: [Colors.black, Colors.grey.shade800],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    )
+            colors: [Colors.black, Colors.grey.shade800],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
         : LinearGradient(
-      colors: [Colors.blue.shade200, Colors.pink.shade100],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    );
-
+            colors: [Colors.blue.shade200, Colors.pink.shade100],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          );
 
     return Scaffold(
       appBar: null,
       body: Container(
         decoration: BoxDecoration(
-          gradient: gradient, // Apply gradient as background
+          gradient: gradient,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            AnimatedGradientText(),
             Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(255, 255, 255, 0.6), // Semi-transparent white background
+                color: Color.fromRGBO(255, 255, 255, 0.6),
                 borderRadius: BorderRadius.circular(20),
               ),
               padding: EdgeInsets.all(10),

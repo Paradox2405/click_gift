@@ -1,14 +1,37 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'product_controller.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
+
+  @override
+  _ProductPageState createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  File? _image;
+  final _picker = ImagePicker();
+  String? _selectedWrappingStyle;
+  TextEditingController _messageController = TextEditingController();
+
+  Future<void> _openImagePicker(ImageSource source) async {
+    final XFile? pickedImage = await _picker.pickImage(source: source);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final product = Get.arguments as Map<String, dynamic>;
-    final ProductController controller = Get.find <ProductController>();
+    final ProductController controller = Get.find<ProductController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -20,7 +43,6 @@ class ProductPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image
             Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -33,8 +55,6 @@ class ProductPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-
-            // Product Name
             Text(
               product['name'],
               style: const TextStyle(
@@ -43,8 +63,6 @@ class ProductPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-
-            // Product Price
             Text(
               "\$${product['price']}",
               style: TextStyle(
@@ -54,8 +72,6 @@ class ProductPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-
-            // Product Description
             Text(
               product['description'],
               style: const TextStyle(
@@ -64,8 +80,6 @@ class ProductPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-
-            // Quantity Selector
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -82,9 +96,9 @@ class ProductPage extends StatelessWidget {
                       },
                     ),
                     Obx(() => Text(
-                      "${controller.quantity.value}",
-                      style: const TextStyle(fontSize: 18),
-                    )),
+                          "${controller.quantity.value}",
+                          style: const TextStyle(fontSize: 18),
+                        )),
                     IconButton(
                       icon: const Icon(Icons.add),
                       onPressed: () {
@@ -96,14 +110,108 @@ class ProductPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-
-            // Add to Cart Button
+            const Text(
+              "You can upload or capture a custom image for gift wrapping or a personalized message card.",
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: ElevatedButton(
+                onPressed: () async {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text('Select Image Source'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            title: const Text('Capture from Camera'),
+                            onTap: () {
+                              Navigator.pop(context);
+                              _openImagePicker(ImageSource.camera);
+                            },
+                          ),
+                          ListTile(
+                            title: const Text('Select from Gallery'),
+                            onTap: () {
+                              Navigator.pop(context);
+                              _openImagePicker(ImageSource.gallery);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: const Text(
+                  "Upload a Custom Image",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            if (_image != null)
+              Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.file(
+                    _image!,
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            const SizedBox(height: 24),
+            DropdownButton<String>(
+              value: _selectedWrappingStyle,
+              hint: const Text("Wrapping Style"),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedWrappingStyle = newValue;
+                });
+              },
+              items: <String>['Classic', 'Luxury', 'Minimalist']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              "Enter a Custom Message (Optional)",
+              style: TextStyle(fontSize: 16),
+            ),
+            TextField(
+              controller: _messageController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Your message here",
+              ),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 24),
             Center(
               child: ElevatedButton(
                 onPressed: () {
                   controller.addToCart(
-                    product['name'], // Using the product name as a unique ID
+                    product['name'],
                     product,
+                    _image,
+                    _selectedWrappingStyle ?? "",
+                    _messageController.text,
                   );
                 },
                 style: ElevatedButton.styleFrom(

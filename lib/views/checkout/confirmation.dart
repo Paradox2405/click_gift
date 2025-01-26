@@ -32,7 +32,7 @@ class OrderConfirmationScreen extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Get.offAllNamed(Routes.home); // Replace with your home route
+                  Get.offAllNamed(Routes.home);
                 },
                 child: const Text("Back to Home"),
               ),

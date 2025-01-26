@@ -4,6 +4,7 @@ import 'package:click_gift/views/checkout/checkout_view.dart';
 import 'package:click_gift/views/checkout/confirmation.dart';
 import 'package:click_gift/views/home/home_binding.dart';
 import 'package:click_gift/views/home/home_view.dart';
+import 'package:click_gift/views/inquiries/inquiries.dart';
 import 'package:click_gift/views/product/product_binding.dart';
 import 'package:click_gift/views/product/product_view.dart';
 import 'package:click_gift/views/register/register_binding.dart';
@@ -21,6 +22,7 @@ class Routes {
   static const String cart = "/cart_page";
   static const String checkout = "/checkout_page";
   static const String confirmation = "/confirmation_page";
+  static const String inquiries = "/inquiries_page";
 
   static final routes = [
     GetPage(
@@ -48,6 +50,9 @@ class Routes {
     GetPage(
       name: Routes.confirmation,
       page: () => OrderConfirmationScreen(),
+    ),  GetPage(
+      name: Routes.inquiries,
+      page: () => InquiriesPage(),
     ),
   ];
 }

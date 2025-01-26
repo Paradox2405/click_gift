@@ -1,13 +1,45 @@
+import 'package:battery_plus/battery_plus.dart';
+import 'package:click_gift/components/custom_snackbar.dart';
 import 'package:click_gift/views/checkout/confirmation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
-class CheckoutPage extends StatelessWidget {
+class CheckoutPage extends StatefulWidget {
   CheckoutPage({super.key});
 
+  @override
+  _CheckoutPageState createState() => _CheckoutPageState();
+}
+
+class _CheckoutPageState extends State<CheckoutPage> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController recipientNameController = TextEditingController();
   final RxString selectedPaymentMethod = "Credit/Debit Card".obs;
+
+  final Battery _battery = Battery();
+  late int _batteryLevel;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+    _checkBatteryLevel();
+  }
+
+  Future<void> _checkBatteryLevel() async {
+    _batteryLevel = await _battery.batteryLevel;
+
+    if (_batteryLevel < 20) {
+      showCustomSnackbar(
+        title: "Low Battery",
+        message:
+            "Your battery is below 20%. Please plug in your charger to avoid interruptions during checkout.",
+        backgroundColor: Colors.orangeAccent,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +95,6 @@ class CheckoutPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to confirmation screen
                   Get.to(() => OrderConfirmationScreen(), arguments: {
                     "recipientName": recipientNameController.text,
                     "address": addressController.text,
@@ -77,5 +108,43 @@ class CheckoutPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showCustomSnackbar(
+          title: "Permission Denied",
+          message: "Please enable location permission from settings",
+          backgroundColor: Colors.redAccent);
+      return;
+    }
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      showCustomSnackbar(
+          title: "Location Disabled",
+          message: "Please enable location services",
+          backgroundColor: Colors.redAccent);
+      return;
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+        locationSettings: LocationSettings(accuracy: LocationAccuracy.best));
+
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    if (placemarks.isNotEmpty) {
+      Placemark placemark = placemarks.first;
+      String address =
+          "${placemark.name}, ${placemark.locality}, ${placemark.country}";
+
+      addressController.text = address;
+    }
   }
 }

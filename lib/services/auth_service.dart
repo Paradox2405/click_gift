@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../models/user.dart';
 
 class AuthService {
@@ -18,12 +20,6 @@ class AuthService {
     await prefs.setString(_userKey, userJson);
   }
 
-  static Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_isLoggedInKey);
-    await prefs.remove(_userKey);
-  }
-
   static Future<User?> getUser() async {
     final prefs = await SharedPreferences.getInstance();
     final userJson = prefs.getString(_userKey);
@@ -34,7 +30,7 @@ class AuthService {
 
   static Future<bool> validateUser(String email, String password) async {
     final user = await getUser();
-    if (user == null) return false; // No user is registered
+    if (user == null) return false;
     return user.email == email && user.password == password;
   }
 }

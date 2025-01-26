@@ -1,7 +1,7 @@
-import 'package:click_gift/components/custom_snackbar.dart';
 import 'package:click_gift/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'home_controller.dart';
 
 class HomePage extends StatelessWidget {
@@ -14,15 +14,15 @@ class HomePage extends StatelessWidget {
     final theme = Theme.of(context);
     final gradient = theme.brightness == Brightness.dark
         ? LinearGradient(
-      colors: [Colors.black, Colors.grey.shade800],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    )
+            colors: [Colors.black, Colors.grey.shade800],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
         : LinearGradient(
-      colors: [Colors.blue.shade200, Colors.pink.shade100],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    );
+            colors: [Colors.blue.shade200, Colors.pink.shade100],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          );
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
             );
           },
         ),
-          title: const Text("Click Gift"),
+        title: const Text("Click Gift"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -66,14 +66,16 @@ class HomePage extends StatelessWidget {
                     backgroundImage: const AssetImage("assets/logo.png"),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "John Doe",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Obx(() {
+                    return Text(
+                      controller.userName.value,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  })
                 ],
               ),
             ),
@@ -81,8 +83,7 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.question_answer),
               title: const Text("Inquiries"),
               onTap: () {
-                // Navigate to Inquiries Page
-                Get.toNamed('/inquiries');
+                Get.toNamed(Routes.inquiries);
               },
             ),
             const Divider(),
@@ -107,14 +108,12 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.logout),
               title: const Text("Logout"),
               onTap: () {
-                // Handle logout logic
                 Get.defaultDialog(
                   title: "Logout",
                   content: const Text("Are you sure you want to logout?"),
                   confirm: ElevatedButton(
                     onPressed: () {
-                      // Perform logout (e.g., clear session, navigate to login page)
-                      Get.offAllNamed(Routes.login); // Example: Navigate to login screen
+                      controller.logout();
                     },
                     child: const Text("Yes"),
                   ),
@@ -130,7 +129,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(
@@ -145,7 +143,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.only(top: 10,bottom: 10),
+                margin: EdgeInsets.only(top: 10, bottom: 10),
                 height: 50,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -194,7 +192,7 @@ class HomePage extends StatelessWidget {
                     final product = controller.filteredProducts[index];
                     return GestureDetector(
                       onTap: () {
-                      Get.toNamed(Routes.product,arguments: product);
+                        Get.toNamed(Routes.product, arguments: product);
                       },
                       child: Card(
                         elevation: 2,
@@ -219,7 +217,8 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               child: Text("\$${product['price']}"),
                             ),
                           ],

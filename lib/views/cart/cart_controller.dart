@@ -1,10 +1,11 @@
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class CartController extends GetxController {
-  var cart = <String, dynamic>{}.obs; // Observable map to store cart items
-  var totalPrice = 0.0.obs; // Observable for total price
+  var cart = <String, dynamic>{}.obs;
+  var totalPrice = 0.0.obs;
 
   @override
   void onInit() {
@@ -12,7 +13,6 @@ class CartController extends GetxController {
     loadCart();
   }
 
-  // Load the cart from SharedPreferences
   Future<void> loadCart() async {
     final prefs = await SharedPreferences.getInstance();
     final existingCart = prefs.getString('cart');
@@ -22,40 +22,39 @@ class CartController extends GetxController {
     }
   }
 
-  // Save the cart to SharedPreferences
   Future<void> saveCart() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('cart', jsonEncode(cart.value));
   }
 
-  // Increase the quantity of a cart item
   void increaseQuantity(String productId) {
     if (cart.containsKey(productId)) {
       cart[productId]['quantity']++;
+
+      cart.refresh();
       calculateTotalPrice();
       saveCart();
     }
   }
 
-  // Decrease the quantity of a cart item
   void decreaseQuantity(String productId) {
     if (cart.containsKey(productId) && cart[productId]['quantity'] > 1) {
       cart[productId]['quantity']--;
+      cart.refresh();
       calculateTotalPrice();
       saveCart();
     }
   }
 
-  // Remove an item from the cart
   void removeItem(String productId) {
     if (cart.containsKey(productId)) {
       cart.remove(productId);
+      cart.refresh();
       calculateTotalPrice();
       saveCart();
     }
   }
 
-  // Calculate the total price of all items in the cart
   void calculateTotalPrice() {
     totalPrice.value = 0.0;
     cart.forEach((key, value) {

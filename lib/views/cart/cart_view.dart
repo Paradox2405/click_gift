@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:click_gift/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'cart_controller.dart';
 
 class CartView extends StatelessWidget {
@@ -8,8 +11,6 @@ class CartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Cart"),
@@ -33,59 +34,132 @@ class CartView extends StatelessWidget {
                   final productId = controller.cart.keys.toList()[index];
                   final cartItem = controller.cart[productId];
                   final product = cartItem['product'];
+                  final customImage = cartItem['customImage'];
+                  final wrappingStyle = cartItem['wrappingStyle'];
+                  final customMessage = cartItem['customMessage'];
+
+                  // Use RxBool to track expanded state per item
+                  RxBool isExpanded = false.obs;
 
                   return Card(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 5,
                     ),
-                    child: ListTile(
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          product['image'],
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              product['image'],
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          title: Text(product['name']),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "\$${product['price']}",
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                              Text(
+                                "Quantity: ${cartItem['quantity']}",
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.remove),
+                                onPressed: () {
+                                  controller.decreaseQuantity(productId);
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.add),
+                                onPressed: () {
+                                  controller.increaseQuantity(productId);
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  controller.removeItem(productId);
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      title: Text(product['name']),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "\$${product['price']}",
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          Text(
-                            "Quantity: ${cartItem['quantity']}",
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.remove),
-                            onPressed: () {
-                              controller.decreaseQuantity(productId);
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {
-                              controller.increaseQuantity(productId);
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              controller.removeItem(productId);
-                            },
-                          ),
-                        ],
-                      ),
+                        Obx(() {
+                          List<Widget> expandedWidgets = [];
+                          if (isExpanded.value) {
+                            expandedWidgets.add(const SizedBox(height: 8));
+                            if (customImage != null) {
+                              expandedWidgets.add(
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.file(
+                                      File(customImage),
+                                      height: 100,
+                                      width: 100,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            expandedWidgets.add(const SizedBox(height: 8));
+                            expandedWidgets.add(
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                child: Text(
+                                  "Wrapping Style: $wrappingStyle",
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                              ),
+                            );
+                            expandedWidgets.add(
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                child: Text(
+                                  "Custom Message: $customMessage",
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                              ),
+                            );
+                          }
+                          // Add the "Show More" or "Show Less" button
+                          expandedWidgets.add(
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              child: TextButton(
+                                onPressed: () {
+                                  isExpanded.value = !isExpanded.value;
+                                },
+                                child: Text(isExpanded.value
+                                    ? "Show Less"
+                                    : "Show More"),
+                              ),
+                            ),
+                          );
+                          return Column(
+                            children: expandedWidgets,
+                          );
+                        }),
+                      ],
                     ),
                   );
                 },
@@ -104,7 +178,7 @@ class CartView extends StatelessWidget {
                     ),
                   ),
                   Obx(
-                        () => Text(
+                    () => Text(
                       "\$${controller.totalPrice.value.toStringAsFixed(2)}",
                       style: TextStyle(
                         fontSize: 18,
