@@ -1,16 +1,43 @@
-# click_gift
+# Click Gift
 
-online gift store app
+An online gift store app built with Flutter and GetX. Shoppers browse gifts by category, choose a wrapping style, add a recipient and check out with cash on delivery or a card.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Product catalogue with categories and product detail pages
+- Cart and checkout with recipient name, address, wrapping style and payment method (cash on delivery or credit/debit card)
+- Order confirmation screen
+- Inquiry form with an optional photo from the camera or gallery
+- Profile settings: dark mode, email and SMS notification toggles, logout
+- Device-aware UX:
+  - offline banner (`connectivity_plus`)
+  - low battery warning (`battery_plus`)
+  - delivery address from your current location (`geolocator`, `geocoding`)
+- Login and registration with the session saved locally
 
-A few resources to get you started if this is your first Flutter project:
+## Tech stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Flutter** (Dart) for Android and iOS
+- **GetX** for state management, routing and dependency injection (a binding and controller per screen)
+- `shared_preferences`, `connectivity_plus`, `battery_plus`, `geolocator`, `geocoding`, `image_picker`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Project structure
+
+```
+lib/
+  components/   reusable widgets and the app theme
+  models/       user model
+  routes/       GetX route table
+  services/     auth service
+  views/        cart, categories, checkout, dashboard, home, inquiries,
+                login, product, profile, register (view + controller + binding)
+```
+
+## Getting started
+
+```bash
+flutter pub get
+flutter run
+```
+
+Location, camera and gallery features ask for permission at runtime on the device.
